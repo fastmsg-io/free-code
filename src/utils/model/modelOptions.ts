@@ -515,6 +515,21 @@ export function getModelOptions(fastMode = false): ModelOption[] {
     })
   }
 
+  // free-local / Ollama cloud presets: comma-separated IDs for /model picker
+  const ollamaPresetList = process.env.FREE_LOCAL_OLLAMA_MODELS
+  if (ollamaPresetList) {
+    for (const raw of ollamaPresetList.split(',')) {
+      const id = raw.trim()
+      if (id && !options.some(existing => existing.value === id)) {
+        options.push({
+          value: id,
+          label: id,
+          description: `Ollama cloud · ${id}`,
+        })
+      }
+    }
+  }
+
   // Append additional model options fetched during bootstrap
   for (const opt of getGlobalConfig().additionalModelOptionsCache ?? []) {
     if (!options.some(existing => existing.value === opt.value)) {
