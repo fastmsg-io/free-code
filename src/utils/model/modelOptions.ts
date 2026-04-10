@@ -15,6 +15,7 @@ import {
 } from '../modelCost.js'
 import { getSettings_DEPRECATED } from '../settings/settings.js'
 import { checkOpus1mAccess, checkSonnet1mAccess } from './check1mAccess.js'
+import { isModelFamilyAlias } from './aliases.js'
 import { getAPIProvider } from './providers.js'
 import { isModelAllowed } from './modelAllowlist.js'
 import {
@@ -527,6 +528,29 @@ export function getModelOptions(fastMode = false): ModelOption[] {
           description: `Ollama cloud · ${id}`,
         })
       }
+    }
+  }
+
+  // Concrete IDs in settings.availableModels (e.g. Ollama :cloud) must appear in
+  // /model even when FREE_LOCAL_OLLAMA_MODELS is missing from the process env.
+  const mergedSettings = getSettings_DEPRECATED() || {}
+  const allowlisted = mergedSettings.availableModels
+  if (allowlisted?.length) {
+    for (const raw of allowlisted) {
+      const id = raw.trim()
+      const idLower = id.toLowerCase()
+      if (
+        !id ||
+        isModelFamilyAlias(idLower) ||
+        options.some(existing => existing.value === id)
+      ) {
+        continue
+      }
+      options.push({
+        value: id,
+        label: id,
+        description: `Available model · ${id}`,
+      })
     }
   }
 
