@@ -43,5 +43,5 @@ free-local() {
     ANTHROPIC_BASE_URL="$base" \
     FREE_LOCAL_OLLAMA_MODELS="$ollama_models" \
     CLAUDE_CONFIG_DIR="$HOME/.free-code" \
-    "$FREE_CODE_BIN" --bare --model "$model" "$@"
+    "$FREE_CODE_BIN" --model "$model" "$@"
 }
