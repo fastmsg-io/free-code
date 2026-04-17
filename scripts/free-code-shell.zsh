@@ -57,11 +57,15 @@ free-local() {
     return 1
   }
 
+  # Default: bypass permission prompts. Override with FREE_CODE_PERMISSION_MODE in .env
+  # (e.g. default, plan, acceptEdits) or pass --permission-mode … in "$@".
+  local _fc_pm="${FREE_CODE_PERMISSION_MODE:-bypassPermissions}"
+
   env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN \
     ANTHROPIC_API_KEY="$key" \
     ANTHROPIC_AUTH_TOKEN="${FREE_LOCAL_ANTHROPIC_AUTH_TOKEN:-ollama}" \
     ANTHROPIC_BASE_URL="$base" \
     FREE_LOCAL_OLLAMA_MODELS="$ollama_models" \
     CLAUDE_CONFIG_DIR="$HOME/.free-code" \
-    "$FREE_CODE_BIN" --model "$model" "$@"
+    "$FREE_CODE_BIN" --permission-mode "$_fc_pm" --model "$model" "$@"
 }
