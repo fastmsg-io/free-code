@@ -29,7 +29,7 @@ free-local() {
   fi
 
   local key="${FREE_LOCAL_API_KEY:-sk-local}"
-  local ollama_models="${FREE_LOCAL_OLLAMA_MODELS:-minimax-m2.7:cloud,glm-5.1:cloud,gemma4:31b-cloud,qwen3.5:cloud,qwen3-coder-next:cloud}"
+  local ollama_models="${FREE_LOCAL_OLLAMA_MODELS:-minimax-m2.7:cloud,glm-5.1:cloud,gemma4:31b-cloud,qwen3.5:cloud,qwen3-coder-next:cloud,deepseek-v4-pro:cloud,kimi-k2.6:cloud}"
 
   [[ -x "$FREE_CODE_BIN" ]] || {
     echo "free-local: binary not found/executable at $FREE_CODE_BIN" >&2
